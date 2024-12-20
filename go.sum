@@ -1,0 +1,8 @@
+github.com/fluhus/biostuff v1.0.0 h1:9HH+XyDvHFI7P5cDA3TGXFbX6b+6yx+z8CMbDxRtnDw=
+github.com/fluhus/biostuff v1.0.0/go.mod h1:CH/SVwRUwvXWkfmDI8n1jTF58dnlVCl4fJCTWGm6gys=
+github.com/fluhus/gostuff v1.0.1 h1:kYC1AM8x19QCxOIbCE9p8tWnzHlU3/gyNj9Nc3P4v7Q=
+github.com/fluhus/gostuff v1.0.1/go.mod h1:INEEKlfETwNxG5rOVcegi1peht0SyXwUZr2xIsDC0rs=
+github.com/klauspost/compress v1.17.9 h1:6KIumPrER1LHsvBVuDa0r5xaG0Es51mhhB9BQB2qeMA=
+github.com/klauspost/compress v1.17.9/go.mod h1:Di0epgTjJY877eYKx5yC51cX2A2Vl2ibi7bDH9ttBbw=
+golang.org/x/exp v0.0.0-20241204233417-43b7b7cde48d h1:0olWaB5pg3+oychR51GUVCEsGkeCU/2JxjBgIo4f3M0=
+golang.org/x/exp v0.0.0-20241204233417-43b7b7cde48d/go.mod h1:qj5a5QZpwLU2NLQudwIN5koi3beDhSAlJwa67PuM98c=
