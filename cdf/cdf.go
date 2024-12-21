@@ -34,6 +34,14 @@ func New(cdf []float64) (CDF, error) {
 	return CDF{slices.Clone(cdf)}, nil
 }
 
+func Must(cdf []float64) CDF {
+	c, err := New(cdf)
+	if err != nil {
+		panic(err)
+	}
+	return c
+}
+
 func (c CDF) Choose(rng *rand.Rand) int {
 	p := rng.Float64()
 	i, _ := slices.BinarySearch(c.a, p)
@@ -55,4 +63,8 @@ func (c *CDF) UnmarshalJSON(data []byte) error {
 
 func (c *CDF) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.a)
+}
+
+func (c CDF) GoString() string {
+	return fmt.Sprintf("cdf.Must(%#v)", c.a)
 }

@@ -13,6 +13,9 @@ import (
 	"golang.org/x/exp/slices"
 )
 
+//go:generate go run ./gen/gen.go
+//go:generate go run ./gen2/gen2.go
+
 // BUG(amit): Add unit tests for model.
 
 const (

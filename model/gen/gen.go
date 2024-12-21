@@ -16,10 +16,10 @@ import (
 func main() {
 	m := basicModel()
 	j, _ := json.Marshal(m)
-	os.WriteFile("Basic.json", j, 0o644)
+	os.WriteFile("gen2/Basic.json", j, 0o644)
 	m = perfectModel()
 	j, _ = json.Marshal(m)
-	os.WriteFile("Perfect.json", j, 0o644)
+	os.WriteFile("gen2/Perfect.json", j, 0o644)
 }
 
 func basicModel() map[string]any {
