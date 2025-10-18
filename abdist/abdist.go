@@ -12,7 +12,9 @@ import (
 )
 
 const (
-	lognormalScale = 1.5 // STD of the normal distribution in lognormal. Measured in 10K samples.
+	// STD of the normal distribution in lognormal.
+	// Measured in Project 10K samples.
+	lognormalScale = 1.5
 )
 
 // BUG(amit): Add zero-inflated lognormal?
