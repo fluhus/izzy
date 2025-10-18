@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"slices"
 
 	"github.com/fluhus/gostuff/gnum"
 	"github.com/fluhus/gostuff/snm"
@@ -96,7 +97,7 @@ func perfectModel() map[string]any {
 
 func phredCDF(mean, std, max float64) cdf.CDF {
 	var ps []float64
-	for i := 0; i < 5000000; i++ {
+	for range 5000000 {
 		n := min(rand.NormFloat64()*std+mean, max)
 		p := int(math.Round(-10 * math.Log10(1-n)))
 		for p >= len(ps) {
@@ -126,9 +127,10 @@ func perfectSubstCDF() [4]cdf.CDF {
 }
 
 func toCDF(ps []float64) cdf.CDF {
+	ps = slices.Clone(ps) // Leave input unchanged, for safety.
 	for i := range ps[1:] {
 		ps[i+1] += ps[i]
 	}
 	gnum.Mul1(ps, 1/ps[len(ps)-1])
-	return cdf.Must(ps)
+	return ps
 }
