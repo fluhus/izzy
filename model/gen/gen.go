@@ -3,7 +3,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"math"
 	"math/rand"
 	"os"
@@ -131,9 +130,5 @@ func toCDF(ps []float64) cdf.CDF {
 		ps[i+1] += ps[i]
 	}
 	gnum.Mul1(ps, 1/ps[len(ps)-1])
-	cdf, err := cdf.New(ps)
-	if err != nil {
-		panic(fmt.Sprintf("creating CDF: %v", err))
-	}
-	return cdf
+	return cdf.Must(ps)
 }
