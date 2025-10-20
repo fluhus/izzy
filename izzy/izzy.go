@@ -34,7 +34,8 @@ var (
 	outFile      = flag.String("o", "", "Output file prefix")
 	nReads       = flag.Int("n", 0, "Number of reads")
 	nGenomes     = flag.Int("u", 0, "Number of genomes to simulate from (default: all)")
-	modelName    = flag.String("m", "", "Model name, one of "+modelNames)
+	modelName    = flag.String("m", "", "Model name, one of "+fmtKeys(modelNameToModel))
+	distName     = flag.String("d", "lognormal", "Abundance distribution, one of "+fmtKeys(distNameToDist))
 	ignoreLength = flag.Bool("l", false, "Ignore genome lengths for read counts")
 	singleOutput = flag.Bool("s", false, "Output one file instead of two")
 	abndFile     = flag.String("a", "", "Use abundances from a file")
@@ -47,7 +48,11 @@ var (
 		"miseq":   model.MiSeqModel,
 		"novaseq": model.NovaSeqModel,
 	}
-	modelNames = fmt.Sprint(snm.Sorted(maps.Keys(modelNameToModel)))
+	distNameToDist = map[string]distFunc{
+		"lognormal":   abdist.LogNormal,
+		"exponential": abdist.Exponential,
+		"halfnormal":  abdist.HalfNormal,
+	}
 
 	rng     = rand.New(rand.NewPCG(rand.Uint64(), rand.Uint64()))
 	inFiles []string
@@ -60,8 +65,6 @@ func main() {
 	m := modelNameToModel[*modelName]
 
 	fmt.Println("Reading sequence lengths")
-	// re := regexp.MustCompile(`Rep_\d+|[iu]vig_\d+|SGB_\d+|sgb_\d+|taxid\|[^|]+|v\d+|NC_\d+`)
-	// re = regexp.MustCompile(`.`)
 	lens, err := readSequenceLens(inFiles, *re)
 	die(err)
 
@@ -170,7 +173,11 @@ func checkArgs() error {
 	}
 	if modelNameToModel[*modelName] == nil {
 		return fmt.Errorf("bad model name: %q, need one of %v",
-			*modelName, snm.Sorted(maps.Keys(modelNameToModel)))
+			*modelName, fmtKeys(modelNameToModel))
+	}
+	if distNameToDist[*distName] == nil {
+		return fmt.Errorf("bad distribution name: %q, need one of %v",
+			*distName, fmtKeys(distNameToDist))
 	}
 	return nil
 }
@@ -223,7 +230,7 @@ func createAbundance(groupLens map[string]int, file string) (map[string]float64,
 	}
 	defer fout.Close()
 
-	abnd := abdist.LogNormal(len(groupLens), *nGenomes)
+	abnd := distNameToDist[*distName](len(groupLens), *nGenomes)
 	groupRatios := map[string]float64{}
 	for k := range groupLens {
 		ab := abnd[0]
@@ -282,6 +289,7 @@ func readAbundanceFile(file string, groupLens map[string]int) (map[string]float6
 	return result, nil
 }
 
+// Checks whether a sequence is made only of ATCG.
 func isNucs(seq []byte) bool {
 	for _, b := range seq {
 		if sequtil.Ntoi(b) == -1 {
@@ -302,3 +310,10 @@ func die(err error) {
 func toTSV(r *csv.Reader) {
 	r.Comma = '\t'
 }
+
+// Returns a string representation of a map's keys.
+func fmtKeys[V any](m map[string]V) string {
+	return fmt.Sprint(snm.Sorted(maps.Keys(m)))
+}
+
+type distFunc = func(int, int) []float64
