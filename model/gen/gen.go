@@ -97,7 +97,7 @@ func perfectModel() map[string]any {
 
 func phredCDF(mean, std, max float64) cdf.CDF {
 	var ps []float64
-	for range 5000000 {
+	for range 100000000 {
 		n := min(rand.NormFloat64()*std+mean, max)
 		p := int(math.Round(-10 * math.Log10(1-n)))
 		for p >= len(ps) {
