@@ -26,8 +26,6 @@ import (
 )
 
 // BUG(amit): Add flag for grouping by file name.
-// BUG(amit): Add flag for group RE.
-// BUG(amit): Add flag for distribution type.
 
 var (
 	inGlob       = flag.String("i", "", "Input file glob pattern")
@@ -48,7 +46,7 @@ var (
 		"miseq":   model.MiSeqModel,
 		"novaseq": model.NovaSeqModel,
 	}
-	distNameToDist = map[string]distFunc{
+	distNameToDist = map[string]func(int, int) []float64{
 		"lognormal":   abdist.LogNormal,
 		"exponential": abdist.Exponential,
 		"halfnormal":  abdist.HalfNormal,
@@ -211,7 +209,7 @@ type lenGroup struct {
 
 func simulateReads(seq []byte, m *model.Model, n int,
 	forEach func(fwd, bwd *fastq.Fastq) error) error {
-	for i := 0; i < n; i++ {
+	for range n {
 		fwd, bwd := m.SimulateRead(seq, rng)
 		if fwd == nil { // Sequence is too short.
 			continue
@@ -315,5 +313,3 @@ func toTSV(r *csv.Reader) {
 func fmtKeys[V any](m map[string]V) string {
 	return fmt.Sprint(snm.Sorted(maps.Keys(m)))
 }
-
-type distFunc = func(int, int) []float64
