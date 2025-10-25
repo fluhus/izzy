@@ -154,9 +154,7 @@ func (m *Model) SimulateRead(seq []byte, rng *rand.Rand,
 	}
 	intervalLen := 2*m.ReadLen + m.randomInsertSize(rng)
 	// BUG(amit): Check if this is the best thing to do in this case.
-	if intervalLen > len(seq) {
-		intervalLen = len(seq)
-	}
+	intervalLen = min(intervalLen, len(seq))
 	i := rng.IntN(len(seq) - intervalLen + 1)
 	bwdStart := i + intervalLen - m.ReadLen
 	fwd := slices.Clone(seq[i : i+m.ReadLen])
@@ -201,12 +199,12 @@ func (m *Model) SimulateRead(seq []byte, rng *rand.Rand,
 
 	// +1 to convert positions to 1-based.
 	fwdq := &fastq.Fastq{
-		Name:     []byte(fmt.Sprint(i + 1)),
+		Name:     fmt.Append(nil, i+1),
 		Sequence: fwd,
 		Quals:    phredsToASCII(fwdQuals),
 	}
 	bwdq := &fastq.Fastq{
-		Name:     []byte(fmt.Sprint(bwdStart + 1)),
+		Name:     fmt.Append(nil, bwdStart+1),
 		Sequence: bwd,
 		Quals:    phredsToASCII(bwdQuals),
 	}
