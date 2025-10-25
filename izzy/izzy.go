@@ -54,9 +54,11 @@ var (
 
 	rng     = rand.New(rand.NewPCG(rand.Uint64(), rand.Uint64()))
 	inFiles []string
+	version = "development" // Populated with build flags.
 )
 
 func main() {
+	flag.Usage = printUsage
 	flag.Parse()
 	die(checkArgs())
 
@@ -151,6 +153,10 @@ func main() {
 }
 
 func checkArgs() error {
+	if len(os.Args) == 1 { // No args.
+		printUsage()
+		os.Exit(0)
+	}
 	if *outFile == "" {
 		return fmt.Errorf("no output file")
 	}
@@ -312,4 +318,12 @@ func toTSV(r *csv.Reader) {
 // Returns a string representation of a map's keys.
 func fmtKeys[V any](m map[string]V) string {
 	return fmt.Sprint(snm.Sorted(maps.Keys(m)))
+}
+
+// Override for [flag.Usage].
+func printUsage() {
+	fmt.Fprintf(flag.CommandLine.Output(),
+		"Izzy: a large-scale metagenomic read simulator (version %s)\n\n",
+		version)
+	flag.PrintDefaults()
 }
