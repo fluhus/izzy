@@ -15,17 +15,18 @@ Run `izzy` for the full list of command-line options.
 ### Basic use
 
 ```
-izzy -i genomes.fasta -o my_reads -n 1000000
+izzy -i genomes.fasta -o my_reads -n 1000000 -m basic
 ```
 
 Creates 1M reads from the genomes in `genomes.fasta` and outputs
 two files (paired-end) with the prefix `my_reads`,
-using the default abundance distribution (log-normal).
+using the basic error model and
+the default abundance distribution (log-normal).
 
 ### Multiple genome files
 
 ```
-izzy -i "genomes/*.fasta" -o my_reads -n 1000000
+izzy -i "genomes/*.fasta" -o my_reads -n 1000000 -m basic
 ```
 
 The input path may contain glob characters,
@@ -40,7 +41,7 @@ to prevent the shell from expanding it.
 ### Multiple contigs per genome
 
 ```
-izzy -i genomes.fasta -o my_reads -n 1000000 -g "Species_\d+"
+izzy -i genomes.fasta -o my_reads -n 1000000 -m basic -g "Species_\d+"
 ```
 
 To consider each group of fasta entries as one species,
