@@ -1,0 +1,15 @@
+real 904.13
+user 903.29
+sys 1.31
+real 890.54
+user 889.98
+sys 1.24
+real 902.77
+user 902.56
+sys 1.11
+real 900.43
+user 899.13
+sys 1.58
+real 908.45
+user 908.24
+sys 1.16

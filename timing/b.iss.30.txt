@@ -1,0 +1,15 @@
+real 918.32
+user 911.62
+sys 4.75
+real 913.58
+user 907.15
+sys 5.50
+real 924.32
+user 917.04
+sys 6.05
+real 927.47
+user 917.38
+sys 8.56
+real 955.97
+user 940.19
+sys 10.92
