@@ -87,7 +87,7 @@ func main() {
 		groupRatios, err = readAbundanceFile(*abndFile, groupLens)
 	} else {
 		fmt.Println("Creating abundance distribution")
-		groupRatios, err = createAbundance(groupLens, *outFile+".abundances.tsv")
+		groupRatios, err = createAbundance(groupLens, *outFile+"_abundance.tsv")
 	}
 	die(err)
 
