@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION=0.1
+VERSION=0.2
 OUTDIR=../release
 FLAGS="-ldflags=-s -X main.version=$VERSION"
 
